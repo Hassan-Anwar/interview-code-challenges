@@ -7,5 +7,8 @@ namespace OneBeyondApi.DataAccess
         public List<Book> GetBooks();
 
         public Guid AddBook(Book book);
+
+        bool ReturnBook(Guid bookStockId);
+
     }
 }

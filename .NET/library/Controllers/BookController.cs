@@ -31,5 +31,18 @@ namespace OneBeyondApi.Controllers
         {
             return _bookRepository.AddBook(book);
         }
+
+        [HttpPost]
+        [Route("ReturnBook/{bookStockId}")]
+        public ActionResult ReturnBook(Guid bookStockId)
+        {
+            var success = _bookRepository.ReturnBook(bookStockId);
+            if (!success)
+                return NotFound("Book not found or not on loan.");
+
+            return Ok("Book returned successfully.");
+        }
+
+
     }
 }
