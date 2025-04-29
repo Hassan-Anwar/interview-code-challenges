@@ -26,5 +26,25 @@ namespace OneBeyondApi.DataAccess
                 return borrower.Id;
             }
         }
+
+        public List<(Borrower borrower, List<(Book book, DateTime loanEndDate)>)> GetActiveLoans()
+        {
+            using (var context = new LibraryContext())
+            {
+                var groupedLoans = context.Catalogue
+                    .Where(bs => bs.OnLoanTo != null && bs.LoanEndDate.HasValue && bs.LoanEndDate > DateTime.UtcNow)
+                    .Include(bs => bs.Book)
+                    .Include(bs => bs.OnLoanTo)
+                    .ToList()
+                    .GroupBy(bs => bs.OnLoanTo)
+                    .Select(group => (
+                        borrower: group.Key,
+                        books: group.Select(bs => (bs.Book, bs.LoanEndDate.Value)).ToList()
+                    )).ToList();
+
+                return groupedLoans;
+            }
+        }
+
     }
 }

@@ -31,5 +31,24 @@ namespace OneBeyondApi.Controllers
         {
             return _borrowerRepository.AddBorrower(borrower);
         }
+
+        [HttpGet]
+        [Route("ActiveLoans")]
+        public ActionResult<IEnumerable<object>> GetActiveLoans()
+        {
+            var result = _borrowerRepository.GetActiveLoans()
+                .Select(entry => new
+                {
+                    Borrower = entry.borrower,
+                    BooksOnLoan = entry.Item2.Select(b => new
+                    {
+                        Book = b.book,
+                        LoanEndDate = b.loanEndDate
+                    })
+                });
+
+            return Ok(result);
+        }
+
     }
 }

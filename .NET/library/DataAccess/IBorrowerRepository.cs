@@ -7,5 +7,8 @@ namespace OneBeyondApi.DataAccess
         public List<Borrower> GetBorrowers();
 
         public Guid AddBorrower(Borrower borrower);
+
+        List<(Borrower borrower, List<(Book book, DateTime loanEndDate)>)> GetActiveLoans();
+
     }
 }
