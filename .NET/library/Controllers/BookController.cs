@@ -44,5 +44,27 @@ namespace OneBeyondApi.Controllers
         }
 
 
+        [HttpPost]
+        [Route("ReturnBook")]
+        public ActionResult ReturnBook([FromQuery] Guid bookStockId)
+        {
+            var result = _bookRepository.ReturnBook(bookStockId);
+            if (!result)
+                return BadRequest("Could not return book (not found or already returned).");
+
+            return Ok("Book returned successfully.");
+        }
+
+        [HttpPost]
+        [Route("LoanBook")]
+        public ActionResult LoanBook([FromQuery] Guid bookStockId, [FromQuery] Guid borrowerId, [FromQuery] DateTime loanEndDate)
+        {
+            var result = _bookRepository.LoanBook(bookStockId, borrowerId, loanEndDate);
+            if (!result)
+                return BadRequest("Could not loan book (may already be on loan or borrower/book not found).");
+
+            return Ok("Book loaned successfully.");
+        }
+
     }
 }

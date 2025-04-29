@@ -10,5 +10,9 @@ namespace OneBeyondApi.DataAccess
 
         bool ReturnBook(Guid bookStockId);
 
+        bool ReturnBook(Guid bookStockId);
+
+        bool LoanBook(Guid bookStockId, Guid borrowerId, DateTime loanEndDate);
+
     }
 }
